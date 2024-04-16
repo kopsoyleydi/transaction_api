@@ -26,12 +26,16 @@ ext {
 }
 
 dependencies {
-    //implementation 'org.springframework.boot:spring-boot-starter-data-jdbc'
+    //implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     implementation 'org.springframework.boot:spring-boot-starter-data-cassandra'
+    //implementation group: 'com.datastax.cassandra', name: 'cassandra-driver-core', version: '3.11.5'
+    implementation group: 'com.fasterxml.jackson.core', name: 'jackson-core', version: '2.17.0'
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-client'
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
+    implementation 'org.mapstruct:mapstruct:1.5.5.Final'
+    annotationProcessor 'org.mapstruct:mapstruct-processor:1.5.5.Final'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }
 
