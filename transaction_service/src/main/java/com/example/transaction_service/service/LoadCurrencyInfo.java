@@ -2,6 +2,7 @@ package com.example.transaction_service.service;
 
 import com.example.transaction_service.dto.body.Exchange;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.io.BufferedReader;
@@ -12,7 +13,9 @@ import java.net.URL;
 import java.util.Map;
 
 @Service
+@RequiredArgsConstructor
 public class LoadCurrencyInfo {
+
     public void loadInfoFromExchangeRate() throws IOException {
         String apiUrl = "https://v6.exchangerate-api.com/v6/dc9484e428a232e8b53e9284/latest/USD";
 
@@ -40,5 +43,6 @@ public class LoadCurrencyInfo {
             Double rate = entry.getValue();
             System.out.println("Currency Code: " + currencyCode + ", Rate: " + rate);
         }
+
     }
 }

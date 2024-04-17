@@ -15,5 +15,5 @@ public class CurrencyDto {
 
     private String currencyCode;
 
-    private Long currencyAmount;
+    private Double currencyAmount;
 }

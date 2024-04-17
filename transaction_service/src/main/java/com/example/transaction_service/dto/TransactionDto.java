@@ -4,8 +4,10 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.data.cassandra.core.mapping.Column;
 
 import java.time.ZonedDateTime;
+import java.util.UUID;
 
 @Getter
 @Setter
@@ -13,7 +15,7 @@ import java.time.ZonedDateTime;
 @NoArgsConstructor
 public class TransactionDto {
 
-    private String transactionId;
+    private UUID id;
 
     private Double sum;
 
@@ -23,19 +25,11 @@ public class TransactionDto {
 
     private String currency_shortname;
 
-    private String limit_datetime;
-
-    private String limit_currency_shortname;
-
-    private Double limit_sum;
-
     private ZonedDateTime dateTime;
 
     private String expense_category;
 
-    private Long limit_exceeded;
-
-    private Long remaining_limit;
+    private Boolean limit_exceeded;
 
     private Double current_currency_sum;
 }

@@ -27,14 +27,6 @@ public class Transaction {
     @Column("currency_shortname")
     private String currency_shortname;
 
-    @Column("limit_datetime")
-    private ZonedDateTime limit_datetime;
-
-    @Column("limit_currency_shortname")
-    private String limit_currency_shortname;
-
-    @Column("limit_sum")
-    private Double limit_sum;
 
     @Column("dateTime")
     private ZonedDateTime dateTime;
@@ -43,10 +35,7 @@ public class Transaction {
     private String expense_category;
 
     @Column("limit_exceeded")
-    private Long limit_exceeded;
-
-    @Column("remaining_limit")
-    private Long remaining_limit;
+    private Boolean limit_exceeded;
 
     @Column("current_currency_sum")
     private Double current_currency_sum;

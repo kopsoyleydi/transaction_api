@@ -22,6 +22,9 @@ public class User {
     @Column(name = "limit_sum")
     private Double limit_sum;
 
+    @Column(name = "remaining_limit")
+    private Double remaining_limit;
+
     @Column(name = "limit_datetime")
     private ZonedDateTime limit_datetime;
 

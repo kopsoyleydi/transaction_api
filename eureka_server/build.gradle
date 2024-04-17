@@ -21,6 +21,7 @@ ext {
 
 dependencies {
     implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-server'
+    runtimeOnly group: 'io.netty', name: 'netty-resolver-dns-native-macos', version: '4.1.108.Final'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }
 

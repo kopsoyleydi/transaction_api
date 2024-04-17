@@ -20,5 +20,5 @@ public class Currency {
     private String currencyCode;
 
     @Column("currencyAmount")
-    private Long currencyAmount;
+    private Double currencyAmount;
 }
