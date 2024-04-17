@@ -25,7 +25,7 @@ public class TransactionLimitUtil {
     public boolean SetLimitExceededToTransaction(Long accountFrom){
         AtomicBoolean ans = new AtomicBoolean(false);
         webClientForUser.get()
-                .uri("/api/user/getRemainingLimit")
+                .uri("/api/user/getRemainingLimit/" + accountFrom)
                 .retrieve()
                 .bodyToMono(Double.class)
                 .subscribe(responseBody -> {
@@ -42,7 +42,7 @@ public class TransactionLimitUtil {
                 MinusAmountFromLimit.builder().accountFrom(accountFrom).sum(sum)
                         .build());
         webClientForUser.put()
-                .uri("/api/resource")
+                .uri("/api/balance/minus")
                 .contentType(MediaType.APPLICATION_JSON)
                 .body(BodyInserters.fromValue(requestBody))
                 .retrieve()
@@ -68,4 +68,6 @@ public class TransactionLimitUtil {
                 });
         return ans.get();
     }
+
+
 }
