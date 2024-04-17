@@ -1,24 +1,27 @@
 package com.example.transaction_service.data.model;
 
-import lombok.Data;
+import lombok.*;
 import org.springframework.data.annotation.Id;
-import org.springframework.data.cassandra.core.mapping.Column;
-import org.springframework.data.cassandra.core.mapping.PrimaryKey;
-import org.springframework.data.cassandra.core.mapping.Table;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.UUID;
 
-@Table("currency")
-@Data
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
+@Document(collection = "currency")
 public class Currency {
 
-    @PrimaryKey
     @Id
-    private UUID id;
+    private String id;
 
-    @Column("currencyCode")
     private String currencyCode;
 
-    @Column("currencyAmount")
     private Double currencyAmount;
+
+    public Currency(String currencyCode, Double currencyAmount){
+        this.currencyCode = currencyCode;
+        this.currencyAmount = currencyAmount;
+    }
 }

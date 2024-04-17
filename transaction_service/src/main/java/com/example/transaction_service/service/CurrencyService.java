@@ -2,6 +2,7 @@ package com.example.transaction_service.service;
 
 import com.example.transaction_service.data.repointer.CurrencyRepoInter;
 import com.example.transaction_service.dto.mapper.CurrencyMapper;
+import com.example.transaction_service.util.LoadCurrencyInfo;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,6 +18,8 @@ public class CurrencyService {
 
     private final CurrencyMapper currencyMapper;
 
+    private final LoadCurrencyInfo loadCurrencyInfo;
+
     private static final Logger logger = LoggerFactory.getLogger(CurrencyService.class);
 
     public ResponseEntity<?> getCurrencyAmount(String code){
@@ -26,6 +29,16 @@ public class CurrencyService {
         }
         catch (Exception e){
             logger.error("Error in Currency Service, method: getCurrencyAmount");
+            return ResponseEntity.internalServerError().body("Something went wrong");
+        }
+    }
+
+    public ResponseEntity<?> loadCurrencies(){
+        try {
+            loadCurrencyInfo.loadInfoFromExchangeRate();
+            return ResponseEntity.ok("Filling was success");
+        }
+        catch (Exception e){
             return ResponseEntity.internalServerError().body("Something went wrong");
         }
     }

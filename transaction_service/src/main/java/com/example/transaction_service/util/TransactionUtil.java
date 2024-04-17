@@ -41,7 +41,6 @@ public class TransactionUtil {
     public TransactionDto parseTransaction(TransactionInsert transactionInsert){
         try {
             TransactionDto transactionDto = new TransactionDto();
-            transactionDto.setId(UUID.randomUUID());
             transactionDto.setAccount_from(transactionInsert.getAccount_from());
             transactionDto.setAccount_to(transactionInsert.getAccount_to());
             CurrencyDto currencyDto = currencyMapper.toDto(

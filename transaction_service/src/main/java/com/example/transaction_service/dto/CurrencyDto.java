@@ -11,7 +11,7 @@ import lombok.Setter;
 @NoArgsConstructor
 public class CurrencyDto {
 
-    private String currencyId;
+    private String id;
 
     private String currencyCode;
 

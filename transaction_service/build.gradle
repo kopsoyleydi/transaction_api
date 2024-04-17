@@ -27,8 +27,7 @@ ext {
 
 dependencies {
     //implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-    implementation 'org.springframework.boot:spring-boot-starter-data-cassandra'
-    //implementation group: 'com.datastax.cassandra', name: 'cassandra-driver-core', version: '3.11.5'
+    implementation 'org.springframework.boot:spring-boot-starter-data-mongodb'
     implementation 'org.apache.logging.log4j:log4j-core:2.23.1'
     implementation 'org.springframework.boot:spring-boot-starter-webflux'
     testImplementation 'ch.qos.logback:logback-classic:1.5.3'
@@ -39,6 +38,7 @@ dependencies {
     annotationProcessor 'org.projectlombok:lombok'
     implementation 'org.mapstruct:mapstruct:1.5.5.Final'
     annotationProcessor 'org.mapstruct:mapstruct-processor:1.5.5.Final'
+    runtimeOnly group: 'io.netty', name: 'netty-resolver-dns-native-macos', version: '4.1.108.Final'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }
 

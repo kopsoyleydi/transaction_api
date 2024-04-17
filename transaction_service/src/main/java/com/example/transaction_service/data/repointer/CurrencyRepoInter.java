@@ -13,4 +13,6 @@ public interface CurrencyRepoInter {
     Currency getByCurrencyCode(String code);
 
     List<Currency> getAllCurrency();
+
+    void insertAllCurrencies(List<Currency> currencyList);
 }

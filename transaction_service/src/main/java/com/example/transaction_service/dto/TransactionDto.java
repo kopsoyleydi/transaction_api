@@ -4,7 +4,6 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.springframework.data.cassandra.core.mapping.Column;
 
 import java.time.ZonedDateTime;
 import java.util.UUID;
@@ -15,7 +14,7 @@ import java.util.UUID;
 @NoArgsConstructor
 public class TransactionDto {
 
-    private UUID id;
+    private String id;
 
     private Double sum;
 

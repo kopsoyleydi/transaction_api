@@ -33,4 +33,9 @@ public class CurrencyRepoImpl implements CurrencyRepoInter {
     public List<Currency> getAllCurrency() {
         return currencyRepository.findAll();
     }
+
+    @Override
+    public void insertAllCurrencies(List<Currency> currencyList) {
+        currencyRepository.saveAll(currencyList);
+    }
 }

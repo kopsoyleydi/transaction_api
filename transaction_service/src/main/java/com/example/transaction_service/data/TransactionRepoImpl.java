@@ -25,7 +25,7 @@ public class TransactionRepoImpl implements TransactionRepoInter {
 
     @Override
     public List<Transaction> getByAllTransactionAccountFrom(Long id) {
-        return transactionRepository.findAllByAccount_from(id);
+        return transactionRepository.findAllByAccountFrom(id);
     }
 
     @Override
