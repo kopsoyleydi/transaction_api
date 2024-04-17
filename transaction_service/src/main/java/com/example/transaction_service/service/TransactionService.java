@@ -3,6 +3,7 @@ package com.example.transaction_service.service;
 import com.example.transaction_service.data.repointer.TransactionRepoInter;
 import com.example.transaction_service.dto.body.TransactionInsert;
 import com.example.transaction_service.dto.mapper.TransactionMapper;
+import com.example.transaction_service.util.TransactionLimitUtil;
 import com.example.transaction_service.util.TransactionUtil;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
@@ -17,6 +18,8 @@ public class TransactionService {
 
     private final TransactionUtil transactionUtil;
 
+    private final TransactionLimitUtil transactionLimitUtil;
+
     private final TransactionRepoInter transactionRepoInter;
 
     private final TransactionMapper transactionMapper;
@@ -25,10 +28,9 @@ public class TransactionService {
 
     public ResponseEntity<?> transactionInsert(TransactionInsert transactionInsert){
         try {
-            return ResponseEntity.ok(transactionMapper.toDto(transactionRepoInter
-                    .insert(transactionMapper
-                            .toModel(transactionUtil
-                                    .parseTransaction(transactionInsert)))));
+            return ResponseEntity.ok(transactionMapper.toDto(
+                    transactionRepoInter.insert(transactionLimitUtil
+                                    .transaction(transactionInsert))));
         }
         catch (Exception e){
             logger.error(e.getMessage());

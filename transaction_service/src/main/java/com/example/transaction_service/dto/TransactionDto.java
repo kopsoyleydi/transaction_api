@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
 import java.util.UUID;
 
@@ -24,7 +25,7 @@ public class TransactionDto {
 
     private String currency_shortname;
 
-    private ZonedDateTime dateTime;
+    private LocalDateTime dateTime;
 
     private String expense_category;
 

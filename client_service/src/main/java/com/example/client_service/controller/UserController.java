@@ -1,5 +1,7 @@
 package com.example.client_service.controller;
 
+import com.example.client_service.dto.response.UserResponse;
+import com.example.client_service.model.User;
 import com.example.client_service.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -35,4 +37,15 @@ public class UserController {
         }
     }
 
+    @GetMapping("/{id}")
+    public UserResponse getAccount(@PathVariable Long id){
+        try {
+            int test = 0;
+            UserResponse userResponse = userService.getAccount(id);
+            return userResponse;
+        }
+        catch (Exception e){
+            return new UserResponse();
+        }
+    }
 }

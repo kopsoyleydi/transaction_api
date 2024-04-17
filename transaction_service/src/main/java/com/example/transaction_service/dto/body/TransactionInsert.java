@@ -3,8 +3,6 @@ package com.example.transaction_service.dto.body;
 import lombok.Builder;
 import lombok.Data;
 
-
-
 @Data
 @Builder
 public class TransactionInsert {

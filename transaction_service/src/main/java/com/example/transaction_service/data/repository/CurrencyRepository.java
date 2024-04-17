@@ -12,7 +12,6 @@ import java.util.UUID;
 @Transactional
 public interface CurrencyRepository extends MongoRepository<Currency, UUID> {
 
-    @Query("select * from currency where currencycode = code")
     public Currency findByCurrencyCode(String code);
 
 }
