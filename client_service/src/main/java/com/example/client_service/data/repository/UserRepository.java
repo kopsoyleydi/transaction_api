@@ -23,4 +23,9 @@ public interface UserRepository extends JpaRepository<User, Long> {
     @Query("update User u set u.balance = u.balance - :sum " +
             ", u.remaining_limit = u.remaining_limit - :sum where u.id = :account")
     Double minusBalance(Long account, Double sum);
+
+    @Modifying
+    @Query("update User u set u.limit_sum = :limit, " +
+            "u.limit_datetime = now(), u.limit_currency_shortname = :limit_currency where u.id = :account")
+    Double setLimit(Long account, Double limit, String limit_currency);
 }

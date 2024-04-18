@@ -14,12 +14,7 @@ public class TransactionController {
     private final TransactionService transactionService;
 
     @PostMapping(value = "/insert")
-    public ResponseEntity<?> insertTransaction(@RequestBody TransactionInsert transactionInsert){
-        try {
-            return ResponseEntity.ok(transactionService.transactionInsert(transactionInsert));
-        }
-        catch (Exception e){
-            return null;
-        }
+    public ResponseEntity<?> insertTransaction(@RequestBody TransactionInsert transactionInsert) throws Exception {
+        return ResponseEntity.ok(transactionService.transactionInsert(transactionInsert));
     }
 }

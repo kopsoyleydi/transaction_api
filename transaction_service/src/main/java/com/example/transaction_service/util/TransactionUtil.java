@@ -1,29 +1,13 @@
 package com.example.transaction_service.util;
 
-import com.example.transaction_service.data.repointer.CurrencyRepoInter;
-import com.example.transaction_service.dto.CurrencyDto;
-import com.example.transaction_service.dto.TransactionDto;
-import com.example.transaction_service.dto.body.TransactionInsert;
-import com.example.transaction_service.dto.mapper.CurrencyMapper;
 import com.example.transaction_service.service.CurrencyService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.time.ZonedDateTime;
 
 @Component
 public class TransactionUtil {
-
-    @Autowired
-    private CurrencyMapper currencyMapper;
-
-    @Autowired
-    private CurrencyRepoInter currencyRepoInter;
-
-    @Autowired
-    private TransactionLimitUtil transactionLimitUtil;
 
     private static final Logger logger = LoggerFactory.getLogger(CurrencyService.class);
 

@@ -1,14 +1,11 @@
 package com.example.client_service.controller;
 
+import com.example.client_service.dto.request.SetLimit;
 import com.example.client_service.dto.response.UserResponse;
-import com.example.client_service.model.User;
 import com.example.client_service.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
@@ -16,6 +13,8 @@ import org.springframework.web.bind.annotation.RestController;
 public class UserController {
 
     private final UserService userService;
+
+
 
     @GetMapping("/getRemainingLimit/{id}")
     public ResponseEntity<?> getRemainingLimit(@PathVariable Long id){
@@ -41,11 +40,20 @@ public class UserController {
     public UserResponse getAccount(@PathVariable Long id){
         try {
             int test = 0;
-            UserResponse userResponse = userService.getAccount(id);
-            return userResponse;
+            return userService.getAccount(id);
         }
         catch (Exception e){
             return new UserResponse();
+        }
+    }
+
+    @PutMapping("/setLimit/{id}")
+    public ResponseEntity<?> setLimit(@PathVariable Long id, @RequestBody SetLimit setLimit){
+        try {
+            return ResponseEntity.ok(userService.setNewLimit(id, setLimit.getLimit(), setLimit.getCurrency_code()));
+        }
+        catch (Exception e){
+            return ResponseEntity.internalServerError().body("Something went wrong");
         }
     }
 }

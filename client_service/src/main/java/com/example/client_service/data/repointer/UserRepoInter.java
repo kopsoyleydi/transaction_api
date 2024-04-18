@@ -19,4 +19,6 @@ public interface UserRepoInter {
     Double getAccountLimit(Long userId);
 
     Double minusBalance(Long account, Double sum);
+
+    Double setNewLimit(Long account, Double limit, String currency);
 }

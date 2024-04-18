@@ -31,11 +31,10 @@ public class UserService {
     public UserResponse getAccount(Long account){
         try {
             UserDto userDto = userMapper.toDto(userRepoInter.getUserById(account));
-            UserResponse user = new UserResponse(userDto.getId()
+            return new UserResponse(userDto.getId()
                     , userDto.getName(), userDto.getLimit_sum(), userDto.getLimit_sum(), userDto.getLimit_datetime(),
                     userDto.getLimit_currency_shortname(), userDto.getSurname()
                     , userDto.getClientIin(), userDto.getBirthDate(), userDto.getAddress(), userDto.getBalance());
-            return user;
         }
         catch (DataAccessException e){
             return new UserResponse();
@@ -45,6 +44,15 @@ public class UserService {
 
     public Double getAccountLimit(Long accountFrom){
         return userRepoInter.getAccountLimit(accountFrom);
+    }
+
+    public ResponseEntity<?> setNewLimit(Long userId, Double limit, String currency){
+        try {
+            return ResponseEntity.ok(userRepoInter.setNewLimit(userId, limit, currency));
+        }
+        catch (DataAccessException e){
+            return ResponseEntity.internalServerError().body("Ошибка при взаимодействием с базой ");
+        }
     }
 
 

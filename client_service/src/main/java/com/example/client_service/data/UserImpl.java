@@ -47,4 +47,9 @@ public class UserImpl implements UserRepoInter {
     public Double minusBalance(Long account, Double sum) {
         return userRepository.minusBalance(account, sum);
     }
+
+    @Override
+    public Double setNewLimit(Long account, Double limit, String currency) {
+        return userRepository.setLimit(account, limit, currency);
+    }
 }
