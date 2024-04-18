@@ -23,14 +23,15 @@ public class LoadCurrencyInfo {
     private final RestTemplate restTemplate;
     private static final Logger logger = LoggerFactory.getLogger(CurrencyService.class);
 
+    private final static String API_URL = "https://v6.exchangerate-api.com/v6/dc9484e428a232e8b53e9284/latest/USD";
+
     public LoadCurrencyInfo(RestTemplate restTemplate) {
         this.restTemplate = restTemplate;
     }
 
     public void loadInfoFromExchangeRate() {
         try {
-            String apiUrl = "https://v6.exchangerate-api.com/v6/dc9484e428a232e8b53e9284/latest/USD";
-            Exchange exchangeRates = restTemplate.getForObject(apiUrl, Exchange.class);
+            Exchange exchangeRates = restTemplate.getForObject(API_URL, Exchange.class);
             if (exchangeRates == null || exchangeRates.getConversion_rates() == null) {
                 logger.error("Failed to fetch exchange rates from API");
                 return;

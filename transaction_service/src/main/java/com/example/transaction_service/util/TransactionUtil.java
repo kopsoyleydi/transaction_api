@@ -21,28 +21,4 @@ public class TransactionUtil {
         }
     }
 
-//    @Deprecated
-//    public TransactionDto parseTransaction(TransactionInsert transactionInsert){
-//        try {
-//            TransactionDto transactionDto = new TransactionDto();
-//            transactionDto.setAccount_from(transactionInsert.getAccount_from());
-//            transactionDto.setAccount_to(transactionInsert.getAccount_to());
-//            CurrencyDto currencyDto = currencyMapper.toDto(
-//                    currencyRepoInter.getByCurrencyCode(
-//                            transactionInsert.getCurrency_shortname()));
-//            transactionDto.setCurrent_currency_sum(currencySum(
-//                    transactionInsert.getSum(), currencyDto.getCurrencyAmount()));
-//            transactionDto.setDateTime(ZonedDateTime.now());
-//            transactionDto.setCurrency_shortname(transactionInsert.getCurrency_shortname());
-//            transactionDto.setExpense_category(transactionInsert.getExpense_category());
-//            transactionDto.setLimit_exceeded(transactionLimitUtil
-//                    .SetLimitExceededToTransaction(transactionInsert.getAccount_from()));
-//            return transactionDto;
-//        }
-//        catch (Exception e){
-//            logger.error(e.getMessage());
-//            return null;
-//        }
-//    }
-
 }

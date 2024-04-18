@@ -1,15 +1,16 @@
 package com.example.transaction_service.data.model;
 
-import lombok.Data;
+import lombok.*;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.time.LocalDateTime;
-import java.time.ZonedDateTime;
-import java.util.UUID;
 
 @Document(collection = "transaction")
-@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Getter
+@Setter
 public class Transaction {
 
     @Id
@@ -33,4 +34,9 @@ public class Transaction {
 
     private Double remaining_limit;
 
+    public Transaction(String number, double v) {
+    }
+
+    public Transaction(String number, LocalDateTime localDateTime) {
+    }
 }

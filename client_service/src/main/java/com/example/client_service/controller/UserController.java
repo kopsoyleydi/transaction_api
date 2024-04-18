@@ -39,7 +39,6 @@ public class UserController {
     @GetMapping("/{id}")
     public UserResponse getAccount(@PathVariable Long id){
         try {
-            int test = 0;
             return userService.getAccount(id);
         }
         catch (Exception e){

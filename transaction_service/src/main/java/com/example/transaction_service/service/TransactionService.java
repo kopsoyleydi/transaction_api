@@ -6,30 +6,34 @@ import com.example.transaction_service.dto.TransactionDto;
 import com.example.transaction_service.dto.body.TransactionInsert;
 import com.example.transaction_service.dto.body.UserDto;
 import com.example.transaction_service.dto.mapper.TransactionMapper;
+import com.example.transaction_service.util.TransactionInsertMapper;
 import com.example.transaction_service.util.TransactionLimitUtil;
-import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
 
 @Service
-@RequiredArgsConstructor
 public class TransactionService {
 
-    private final TransactionLimitUtil transactionLimitUtil;
+    @Autowired
+    private TransactionLimitUtil transactionLimitUtil;
 
-    private final TransactionRepoInter transactionRepoInter;
+    @Autowired
+    private TransactionRepoInter transactionRepoInter;
 
-    private final TransactionMapper transactionMapper;
+    @Autowired
+    private TransactionMapper transactionMapper;
+    
 
     private static final Logger logger = LoggerFactory.getLogger(CurrencyService.class);
+
+
 
     public TransactionDto transactionInsert(TransactionInsert transactionInsert) throws Exception {
         try {

@@ -22,7 +22,7 @@ public class TransactionController {
     }
 
     @GetMapping(value = "/getTransactions/{accountFrom}")
-    public List<Transaction> getAccountTransactions(@PathVariable Long accountFrom){
-        return null;
+    public List<Transaction> getAccountTransactions(@PathVariable Long accountFrom) throws Exception {
+        return transactionService.getAccountTransaction(accountFrom);
     }
 }

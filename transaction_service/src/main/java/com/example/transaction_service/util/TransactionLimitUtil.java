@@ -7,6 +7,7 @@ import com.example.transaction_service.dto.body.TransactionInsert;
 import com.example.transaction_service.dto.body.UserDto;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.common.util.concurrent.AtomicDouble;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
@@ -15,7 +16,6 @@ import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
 
 import java.time.LocalDateTime;
-import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -61,8 +61,8 @@ public class TransactionLimitUtil {
                 .bodyToMono(UserDto.class);
     }
 
-    public boolean minusAmountFromLimit(Long accountFrom, Double sum) throws JsonProcessingException {
-        AtomicBoolean ans = new AtomicBoolean(false);
+    public Double minusAmountFromLimit(Long accountFrom, Double sum) throws JsonProcessingException {
+        AtomicDouble ans = new AtomicDouble(0.0);
         String requestBody = objectMapper.writeValueAsString(
                 MinusAmountFromLimit.builder().accountFrom(accountFrom).sum(sum)
                         .build());
@@ -74,7 +74,7 @@ public class TransactionLimitUtil {
                 .bodyToMono(Double.class)
                 .subscribe(responseBody -> {
                     if (!responseBody.isNaN()){
-                        ans.set(true);
+                        ans.set(responseBody);
                     }
                 });
         return ans.get();
@@ -94,7 +94,7 @@ public class TransactionLimitUtil {
         return ans.get();
     }
 
-    public Transaction transaction(TransactionInsert transactionInsert){
+    public Transaction transaction(TransactionInsert transactionInsert) throws JsonProcessingException {
         UserDto userDto = getUserByAccountFrom(transactionInsert.getAccount_from()).block();
         List<Transaction> transactionList = transactionRepoInter
                 .getByAllTransactionAccountFrom(transactionInsert.getAccount_from());
@@ -114,7 +114,9 @@ public class TransactionLimitUtil {
             limit_exceeded = true;
         }
         Transaction transaction = transactionInsertMapper.parse(transactionInsert);
+        transaction.setRemaining_limit(
+                minusAmountFromLimit(transactionInsert.getAccount_from(), transactionInsert.getSum()));
         transaction.setLimit_exceeded(limit_exceeded);
-        return transactionInsertMapper.parse(transactionInsert);
+        return transaction;
     }
 }

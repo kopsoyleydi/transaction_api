@@ -2,9 +2,10 @@ package com.example.transaction_service.dto.body;
 
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
-@Builder
+@NoArgsConstructor
 public class TransactionInsert {
 
     private Long account_from;
