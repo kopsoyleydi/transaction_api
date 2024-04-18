@@ -5,7 +5,6 @@ import com.example.transaction_service.data.repointer.TransactionRepoInter;
 import com.example.transaction_service.dto.body.MinusAmountFromLimit;
 import com.example.transaction_service.dto.body.TransactionInsert;
 import com.example.transaction_service.dto.body.UserDto;
-import com.example.transaction_service.util.TransactionInsertMapper;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +14,7 @@ import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
 
+import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -96,15 +96,16 @@ public class TransactionLimitUtil {
 
     public Transaction transaction(TransactionInsert transactionInsert){
         UserDto userDto = getUserByAccountFrom(transactionInsert.getAccount_from()).block();
-        List<Transaction> transactionList = transactionRepoInter.getByAllTransactionAccountFrom(1L);
+        List<Transaction> transactionList = transactionRepoInter
+                .getByAllTransactionAccountFrom(transactionInsert.getAccount_from());
         assert userDto != null;
         double limit = userDto.getLimit_sum();
         List<Transaction> inTime = new ArrayList<>();
         double transactionSum = 0.0;
         boolean limit_exceeded = false;
         for (Transaction value : transactionList) {
-            if (value.getDateTime().isAfter(userDto.getLimit_datetime().toLocalDateTime())
-                    && userDto.getLimit_datetime().isBefore(ZonedDateTime.now())) {
+            if (value.getDateTime().isAfter(userDto.getLimit_datetime())
+                    && userDto.getLimit_datetime().isBefore(LocalDateTime.now())) {
                 inTime.add(value);
             }
         }

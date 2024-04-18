@@ -1,4 +1,4 @@
-package com.example.transaction_service.dto;
+package com.example.client_service.dto.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -30,6 +30,4 @@ public class TransactionDto {
     private Boolean limit_exceeded;
 
     private Double current_currency_sum;
-
-    private Double remaining_limit;
 }

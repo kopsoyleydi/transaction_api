@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
 
 @Getter
@@ -20,7 +21,7 @@ public class UserDto {
 
     private Double remaining_limit;
 
-    private ZonedDateTime limit_datetime;
+    private LocalDateTime limit_datetime;
 
     private String limit_currency_shortname;
 
