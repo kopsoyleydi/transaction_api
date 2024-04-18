@@ -1,0 +1,63 @@
+name: CI/CD
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v2
+        with:
+          java-version: '17'
+
+      - name: Build and test Eureka Server
+        working-directory: eureka_server
+        run: |
+          ./mvw clean package
+          ./mvw test
+
+      - name: Deploy Eureka Server
+        working-directory: eureka_server
+        run: |
+          ./deploy-script.sh
+
+      - name: Build and test API Gateway
+        working-directory: api_gateway
+        run: |
+          ./mvw clean package
+          ./mvw test
+
+      - name: Deploy API Gateway
+        working-directory: api_gateway
+        run: |
+          ./deploy-script.sh
+
+      - name: Build and test Transaction Service
+        working-directory: transaction-service
+        run: |
+          ./mvw clean package
+          ./mvw test
+
+      - name: Deploy Transaction Service
+        working-directory: transaction_service
+        run: |
+          ./deploy-script.sh
+
+      - name: Build and test Client Service
+        working-directory: client_service
+        run: |
+          ./mvw clean package
+          ./mvw test
+
+      - name: Deploy Client Service
+        working-directory: client_service
+        run: |
+          ./deploy-script.sh

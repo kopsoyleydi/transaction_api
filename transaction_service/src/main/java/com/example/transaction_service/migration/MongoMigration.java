@@ -19,7 +19,6 @@ public class MongoMigration {
             return;
         }
 
-
         System.out.println("Данные успешно инициализированы в MongoDB.");
     }
 }
