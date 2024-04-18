@@ -15,4 +15,6 @@ public interface CurrencyRepoInter {
     List<Currency> getAllCurrency();
 
     void insertAllCurrencies(List<Currency> currencyList);
+
+    void deleteAll();
 }

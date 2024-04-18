@@ -8,7 +8,7 @@ public interface UserRepoInter {
 
     User insert(User user);
 
-    User change(User user);
+    void change(User user);
 
     User getUserById(Long id);
 
@@ -18,7 +18,5 @@ public interface UserRepoInter {
 
     Double getAccountLimit(Long userId);
 
-    Double minusBalance(Long account, Double sum);
-
-    Double setNewLimit(Long account, Double limit, String currency);
+    void setNewLimit(Long account, Double limit, String currency);
 }

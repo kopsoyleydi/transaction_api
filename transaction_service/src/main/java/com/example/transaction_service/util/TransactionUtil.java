@@ -13,7 +13,8 @@ public class TransactionUtil {
 
     public static Double currencySum(Double sum, Double currencyAmount){
         try {
-            return sum * currencyAmount;
+            int test = 0;
+            return sum * (1 / currencyAmount);
         }
         catch (Exception e){
             logger.error("Error in Transaction Service, method: currencySum");

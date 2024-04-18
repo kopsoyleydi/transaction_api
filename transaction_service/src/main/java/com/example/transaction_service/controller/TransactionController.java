@@ -1,13 +1,11 @@
 package com.example.transaction_service.controller;
 
-import com.example.transaction_service.data.model.Transaction;
 import com.example.transaction_service.dto.body.TransactionInsert;
 import com.example.transaction_service.service.TransactionService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -22,7 +20,22 @@ public class TransactionController {
     }
 
     @GetMapping(value = "/getTransactions/{accountFrom}")
-    public List<Transaction> getAccountTransactions(@PathVariable Long accountFrom) throws Exception {
-        return transactionService.getAccountTransaction(accountFrom);
+    public ResponseEntity<?> getAccountTransactions(@PathVariable Long accountFrom) throws Exception {
+        try {
+            return ResponseEntity.ok(transactionService.getAccountTransaction(accountFrom));
+        }
+        catch (Exception e){
+            return ResponseEntity.internalServerError().body("Something went wrong");
+        }
+    }
+
+    @GetMapping(value = "/getTransactions/limit/{accountFrom}")
+    public ResponseEntity<?> getAccountLimitTransactions(@PathVariable Long accountFrom) throws Exception {
+        try {
+            return ResponseEntity.ok(transactionService.getAccountLimitTransaction(accountFrom));
+        }
+        catch (Exception e){
+            return ResponseEntity.internalServerError().body("Something went wrong");
+        }
     }
 }

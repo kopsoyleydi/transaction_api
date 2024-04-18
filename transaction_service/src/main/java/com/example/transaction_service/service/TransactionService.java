@@ -6,7 +6,6 @@ import com.example.transaction_service.dto.TransactionDto;
 import com.example.transaction_service.dto.body.TransactionInsert;
 import com.example.transaction_service.dto.body.UserDto;
 import com.example.transaction_service.dto.mapper.TransactionMapper;
-import com.example.transaction_service.util.TransactionInsertMapper;
 import com.example.transaction_service.util.TransactionLimitUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -49,18 +48,38 @@ public class TransactionService {
 
     public List<Transaction> getAccountTransaction(Long accountFrom) throws Exception {
         try {
-            UserDto userDto = transactionLimitUtil.getUserByAccountFrom(accountFrom).block();
-            assert userDto != null;
-            List<Transaction> transactions = transactionRepoInter.getByAllTransactionAccountFrom(accountFrom);
-            Map<Boolean, List<Transaction>> partitionedTransactions = transactions.stream()
-                    .collect(Collectors.partitioningBy(f -> f.getDateTime().isAfter(userDto.getLimit_datetime())));
-            transactions.clear();
-            transactions.addAll(partitionedTransactions.get(true));
-            return transactions;
+            return getTransactions(accountFrom, true);
         }
         catch (Exception e){
             logger.error(e.getMessage());
             throw new Exception("Something went wrong");
+        }
+    }
+
+    public List<Transaction> getAccountLimitTransaction(Long accountFrom) throws Exception {
+        try {
+            return getTransactions(accountFrom, false);
+        }
+        catch (Exception e){
+            logger.error(e.getMessage());
+            throw new Exception("Something went wrong");
+        }
+    }
+
+    public List<Transaction> getTransactions(Long accountFrom, boolean type){
+        try{
+            UserDto userDto = transactionLimitUtil.getUserByAccountFrom(accountFrom).block();
+            assert userDto != null;
+            List<Transaction> transactions = transactionRepoInter.getByAllTransactionAccountFrom(accountFrom);
+            Map<Boolean, List<Transaction>> partitionedTransactions = transactions.stream()
+                    .collect(Collectors.partitioningBy(f -> f.getDateTime().isAfter(userDto.getLimit_datetime())
+                            && f.getLimit_exceeded().equals(type)));
+            transactions.clear();
+            transactions.addAll(partitionedTransactions.get(false));
+            return transactions;
+        }
+        catch (Exception e){
+            throw new RuntimeException();
         }
     }
 

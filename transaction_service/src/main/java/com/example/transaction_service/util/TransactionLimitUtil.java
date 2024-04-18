@@ -1,20 +1,20 @@
 package com.example.transaction_service.util;
 
 import com.example.transaction_service.data.model.Transaction;
+import com.example.transaction_service.data.repointer.CurrencyRepoInter;
 import com.example.transaction_service.data.repointer.TransactionRepoInter;
 import com.example.transaction_service.dto.body.MinusAmountFromLimit;
 import com.example.transaction_service.dto.body.TransactionInsert;
 import com.example.transaction_service.dto.body.UserDto;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.common.util.concurrent.AtomicDouble;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
-import org.springframework.web.reactive.function.BodyInserters;
+import org.springframework.web.reactive.function.client.ClientResponse;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
 
+import javax.xml.transform.TransformerException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -32,6 +32,9 @@ public class TransactionLimitUtil {
 
     @Autowired
     private TransactionInsertMapper transactionInsertMapper;
+
+    @Autowired
+    private CurrencyRepoInter currencyRepoInter;
 
     private final ObjectMapper objectMapper;
 
@@ -61,23 +64,17 @@ public class TransactionLimitUtil {
                 .bodyToMono(UserDto.class);
     }
 
-    public Double minusAmountFromLimit(Long accountFrom, Double sum) throws JsonProcessingException {
-        AtomicDouble ans = new AtomicDouble(0.0);
-        String requestBody = objectMapper.writeValueAsString(
-                MinusAmountFromLimit.builder().accountFrom(accountFrom).sum(sum)
-                        .build());
-        webClientForUser.put()
+    public Mono<Double> minusAmountFromLimit(Long account, Double sum) {
+        MinusAmountFromLimit minusAmountFromLimit = new MinusAmountFromLimit(account, sum);
+        return webClientForUser.put()
                 .uri("/api/balance/minus")
-                .contentType(MediaType.APPLICATION_JSON)
-                .body(BodyInserters.fromValue(requestBody))
+                .body(Mono.just(minusAmountFromLimit), MinusAmountFromLimit.class)
                 .retrieve()
-                .bodyToMono(Double.class)
-                .subscribe(responseBody -> {
-                    if (!responseBody.isNaN()){
-                        ans.set(responseBody);
-                    }
-                });
-        return ans.get();
+                .bodyToMono(Double.class);
+    }
+
+    private Mono<? extends Throwable> handleClientError(ClientResponse clientResponse) {
+        return Mono.error(new TransformerException("Employee not found"));
     }
 
     public Double getLimitFromAccount(Long accountFrom){
@@ -91,6 +88,7 @@ public class TransactionLimitUtil {
                         ans.set(responseBody);
                     }
                 });
+        int test = 0;
         return ans.get();
     }
 
@@ -109,13 +107,15 @@ public class TransactionLimitUtil {
                 inTime.add(value);
             }
         }
-        transactionSum = inTime.stream().mapToDouble(Transaction::getSum).sum();
-        if(transactionSum + transactionInsert.getSum() >= limit){
+        transactionSum = inTime.stream().mapToDouble(Transaction::getCurrent_currency_sum).sum();
+        Double currency = currencyRepoInter.getByCurrencyCode(userDto.getLimit_currency_shortname()).getCurrencyAmount();
+        if(transactionSum + (transactionInsert.getSum() * (1 / currency )) >= limit * (1 / currency)){
             limit_exceeded = true;
         }
         Transaction transaction = transactionInsertMapper.parse(transactionInsert);
+        transaction.setSum(transaction.getSum());
         transaction.setRemaining_limit(
-                minusAmountFromLimit(transactionInsert.getAccount_from(), transactionInsert.getSum()));
+                minusAmountFromLimit(transactionInsert.getAccount_from(), transactionInsert.getSum()).block());
         transaction.setLimit_exceeded(limit_exceeded);
         return transaction;
     }

@@ -53,7 +53,8 @@ public class UserService {
 
     public ResponseEntity<?> setNewLimit(Long userId, Double limit, String currency){
         try {
-            return ResponseEntity.ok(userRepoInter.setNewLimit(userId, limit, currency));
+            userRepoInter.setNewLimit(userId, limit, currency);
+            return ResponseEntity.ok(userRepoInter.getAccountLimit(userId));
         }
         catch (DataAccessException e){
             return ResponseEntity.internalServerError().body("Ошибка при взаимодействием с базой ");

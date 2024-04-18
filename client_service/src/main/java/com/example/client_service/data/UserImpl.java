@@ -19,8 +19,8 @@ public class UserImpl implements UserRepoInter {
     }
 
     @Override
-    public User change(User user) {
-        return userRepository.save(user);
+    public void change(User user) {
+        userRepository.save(user);
     }
 
     @Override
@@ -44,12 +44,7 @@ public class UserImpl implements UserRepoInter {
     }
 
     @Override
-    public Double minusBalance(Long account, Double sum) {
-        return userRepository.minusBalance(account, sum);
-    }
-
-    @Override
-    public Double setNewLimit(Long account, Double limit, String currency) {
-        return userRepository.setLimit(account, limit, currency);
+    public void setNewLimit(Long account, Double limit, String currency) {
+        userRepository.setLimit(account, limit, currency);
     }
 }

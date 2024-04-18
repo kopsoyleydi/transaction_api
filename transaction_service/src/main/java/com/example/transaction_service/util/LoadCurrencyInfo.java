@@ -23,7 +23,7 @@ public class LoadCurrencyInfo {
     private final RestTemplate restTemplate;
     private static final Logger logger = LoggerFactory.getLogger(CurrencyService.class);
 
-    private final static String API_URL = "https://v6.exchangerate-api.com/v6/dc9484e428a232e8b53e9284/latest/USD";
+    private final static String API_URL = "https://v6.exchangerate-api.com/v6/dc9484e428a232e8b53e9284/latest/KZT";
 
     public LoadCurrencyInfo(RestTemplate restTemplate) {
         this.restTemplate = restTemplate;
@@ -36,6 +36,7 @@ public class LoadCurrencyInfo {
                 logger.error("Failed to fetch exchange rates from API");
                 return;
             }
+            currencyRepoInter.deleteAll();
             Map<String, Double> conversionRates = exchangeRates.getConversion_rates();
             for (Map.Entry<String, Double> entry : conversionRates.entrySet()) {
                 String currencyCode = entry.getKey();

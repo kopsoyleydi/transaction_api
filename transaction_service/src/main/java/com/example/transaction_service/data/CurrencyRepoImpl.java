@@ -38,4 +38,9 @@ public class CurrencyRepoImpl implements CurrencyRepoInter {
     public void insertAllCurrencies(List<Currency> currencyList) {
         currencyRepository.saveAll(currencyList);
     }
+
+    @Override
+    public void deleteAll() {
+        currencyRepository.deleteAll();
+    }
 }

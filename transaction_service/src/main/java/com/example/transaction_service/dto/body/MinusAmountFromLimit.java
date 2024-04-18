@@ -1,12 +1,12 @@
 package com.example.transaction_service.dto.body;
 
-import lombok.Builder;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
-@Builder
+@AllArgsConstructor
 public class MinusAmountFromLimit {
 
     private Long accountFrom;
