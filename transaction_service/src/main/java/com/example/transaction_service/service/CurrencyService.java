@@ -36,9 +36,11 @@ public class CurrencyService {
     public ResponseEntity<?> loadCurrencies(){
         try {
             loadCurrencyInfo.loadInfoFromExchangeRate();
+            logger.info("Filling was success");
             return ResponseEntity.ok("Filling was success");
         }
         catch (Exception e){
+            logger.error(e.getMessage());
             return ResponseEntity.internalServerError().body("Something went wrong");
         }
     }

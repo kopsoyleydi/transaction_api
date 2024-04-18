@@ -76,9 +76,11 @@ public class TransactionService {
                             && f.getLimit_exceeded().equals(type)));
             transactions.clear();
             transactions.addAll(partitionedTransactions.get(false));
+            transactions.forEach(transaction -> logger.info(transaction.toString()));
             return transactions;
         }
         catch (Exception e){
+            logger.error(e.getMessage());
             throw new RuntimeException();
         }
     }
