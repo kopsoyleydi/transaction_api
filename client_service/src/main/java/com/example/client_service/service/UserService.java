@@ -71,7 +71,17 @@ public class UserService {
 
     public List<TransactionDto> getAccountTransactions(Long userId) throws Exception {
         try {
-            return userUtil.getUsersByAccountFromList(userId).block();
+            return userUtil.getUsersByAccountFromList(userId, true).block();
+        }
+        catch (Exception e){
+            logger.error(e.getMessage());
+            throw new Exception();
+        }
+    }
+
+    public List<TransactionDto> getAccountLimitTransactions(Long userId) throws Exception {
+        try {
+            return userUtil.getUsersByAccountFromList(userId, false).block();
         }
         catch (Exception e){
             logger.error(e.getMessage());

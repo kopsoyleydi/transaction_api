@@ -13,7 +13,5 @@ public interface TransactionRepoInter {
 
     List<Transaction> getByAllTransactionAccountFrom(Long id);
 
-    List<Transaction> getAllTransactionAccountFromAndAccountTo
-            (Long from, Long to);
 
 }

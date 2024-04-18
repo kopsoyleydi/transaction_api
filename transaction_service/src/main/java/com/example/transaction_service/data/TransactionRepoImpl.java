@@ -28,8 +28,4 @@ public class TransactionRepoImpl implements TransactionRepoInter {
         return transactionRepository.findAllByAccountFrom(id);
     }
 
-    @Override
-    public List<Transaction> getAllTransactionAccountFromAndAccountTo(Long from, Long to) {
-        return transactionRepository.findAllByAccount_fromAndAccount_to(from, to);
-    }
 }

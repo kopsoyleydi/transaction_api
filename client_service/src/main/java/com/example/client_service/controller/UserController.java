@@ -65,4 +65,16 @@ public class UserController {
             return ResponseEntity.internalServerError().body("Something went wrong");
         }
     }
+
+    @GetMapping(value = "/getAccountTransactions/{id}")
+    public ResponseEntity<?> getAccountTransactions(@PathVariable Long id){
+        try {
+            return ResponseEntity.ok(userService.getAccountTransactions(id));
+        }
+        catch (Exception e){
+            return ResponseEntity.internalServerError().body("Something went wrong");
+        }
+    }
+
+
 }
