@@ -30,4 +30,6 @@ public class TransactionDto {
     private Boolean limit_exceeded;
 
     private Double current_currency_sum;
+
+    private Double remaining_limit;
 }

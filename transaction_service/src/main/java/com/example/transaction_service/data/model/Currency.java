@@ -23,4 +23,5 @@ public class Currency {
         this.currencyCode = currencyCode;
         this.currencyAmount = currencyAmount;
     }
+
 }

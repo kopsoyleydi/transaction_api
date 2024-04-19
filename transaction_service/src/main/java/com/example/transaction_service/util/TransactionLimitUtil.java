@@ -43,19 +43,19 @@ public class TransactionLimitUtil {
         this.objectMapper = objectMapper;
     }
 
-    public boolean SetLimitExceededToTransaction(Long accountFrom){
-        AtomicBoolean ans = new AtomicBoolean(false);
-        webClientForUser.get()
-                .uri("/api/user/getRemainingLimit/" + accountFrom)
-                .retrieve()
-                .bodyToMono(Double.class)
-                .subscribe(responseBody -> {
-                    if(responseBody >= 0){
-                        ans.set(true);
-                    }
-                });
-        return ans.get();
-    }
+//    public boolean SetLimitExceededToTransaction(Long accountFrom){
+//        AtomicBoolean ans = new AtomicBoolean(false);
+//        webClientForUser.get()
+//                .uri("/api/user/getRemainingLimit/" + accountFrom)
+//                .retrieve()
+//                .bodyToMono(Double.class)
+//                .subscribe(responseBody -> {
+//                    if(responseBody >= 0){
+//                        ans.set(true);
+//                    }
+//                });
+//        return ans.get();
+//    }
 
     public Mono<UserDto> getUserByAccountFrom(Long accountFrom) {
         return webClientForUser.get()
@@ -77,20 +77,20 @@ public class TransactionLimitUtil {
         return Mono.error(new TransformerException("Employee not found"));
     }
 
-    public Double getLimitFromAccount(Long accountFrom){
-        AtomicReference<Double> ans = new AtomicReference<>(0.0);
-        webClientForUser.get()
-                .uri("/api/user/getAccountLimit")
-                .retrieve()
-                .bodyToMono(Double.class)
-                .subscribe(responseBody -> {
-                    if(responseBody >= 0){
-                        ans.set(responseBody);
-                    }
-                });
-        int test = 0;
-        return ans.get();
-    }
+//    public Double getLimitFromAccount(Long accountFrom){
+//        AtomicReference<Double> ans = new AtomicReference<>(0.0);
+//        webClientForUser.get()
+//                .uri("/api/user/getAccountLimit")
+//                .retrieve()
+//                .bodyToMono(Double.class)
+//                .subscribe(responseBody -> {
+//                    if(responseBody >= 0){
+//                        ans.set(responseBody);
+//                    }
+//                });
+//        int test = 0;
+//        return ans.get();
+//    }
 
     public Transaction transaction(TransactionInsert transactionInsert) throws JsonProcessingException {
         UserDto userDto = getUserByAccountFrom(transactionInsert.getAccount_from()).block();

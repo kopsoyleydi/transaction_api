@@ -1,10 +1,13 @@
 package com.example.transaction_service.controller;
 
+import com.example.transaction_service.data.model.Transaction;
 import com.example.transaction_service.dto.body.TransactionInsert;
 import com.example.transaction_service.service.TransactionService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 
 @RestController
@@ -19,23 +22,23 @@ public class TransactionController {
         return ResponseEntity.ok(transactionService.transactionInsert(transactionInsert));
     }
 
-    @GetMapping(value = "/getTransactions/{accountFrom}")
-    public ResponseEntity<?> getAccountTransactions(@PathVariable Long accountFrom) throws Exception {
+    @GetMapping(value = "list/limit/{accountFrom}")
+    public List<Transaction> getAccountTransactions(@PathVariable Long accountFrom) throws Exception {
         try {
-            return ResponseEntity.ok(transactionService.getAccountTransaction(accountFrom));
+            return transactionService.getAccountTransaction(accountFrom, true);
         }
         catch (Exception e){
-            return ResponseEntity.internalServerError().body("Something went wrong");
+            return List.of();
         }
     }
 
-    @GetMapping(value = "/getTransactions/limit/{accountFrom}")
-    public ResponseEntity<?> getAccountLimitTransactions(@PathVariable Long accountFrom) throws Exception {
+    @GetMapping(value = "/list/{accountFrom}")
+    public List<Transaction> getAccountLimitTransactions(@PathVariable Long accountFrom) throws Exception {
         try {
-            return ResponseEntity.ok(transactionService.getAccountLimitTransaction(accountFrom));
+            return transactionService.getAccountTransaction(accountFrom, false);
         }
         catch (Exception e){
-            return ResponseEntity.internalServerError().body("Something went wrong");
+            return List.of();
         }
     }
 }

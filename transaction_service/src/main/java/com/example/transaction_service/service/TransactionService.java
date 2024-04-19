@@ -46,9 +46,9 @@ public class TransactionService {
         }
     }
 
-    public List<Transaction> getAccountTransaction(Long accountFrom) throws Exception {
+    public List<Transaction> getAccountTransaction(Long accountFrom, boolean type) throws Exception {
         try {
-            return getTransactions(accountFrom, true);
+            return getTransactions(accountFrom, type);
         }
         catch (Exception e){
             logger.error(e.getMessage());

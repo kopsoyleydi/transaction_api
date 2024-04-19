@@ -16,7 +16,7 @@ public class UserController {
 
 
 
-    @GetMapping("/getRemainingLimit/{id}")
+    @GetMapping("/limit/remaining/{id}")
     public ResponseEntity<?> getRemainingLimit(@PathVariable Long id){
         try {
             return userService.getRemainingLimit(id);
@@ -26,7 +26,7 @@ public class UserController {
         }
     }
 
-    @GetMapping("/getAccountLimit/{id}")
+    @GetMapping("/limit/account/{id}")
     public ResponseEntity<?> getAccountLimit(@PathVariable Long id){
         try {
             return ResponseEntity.ok(userService.getAccountLimit(id));
@@ -56,20 +56,20 @@ public class UserController {
         }
     }
 
-    @GetMapping(value = "/getAccountLimitTransactions/{id}")
+    @GetMapping(value = "/limit/list/bad/{id}")
     public ResponseEntity<?> getAccountLimitTransactions(@PathVariable Long id){
         try {
-            return ResponseEntity.ok(userService.getAccountTransactions(id));
+            return ResponseEntity.ok(userService.getAccountTransactions(id, false));
         }
         catch (Exception e){
             return ResponseEntity.internalServerError().body("Something went wrong");
         }
     }
 
-    @GetMapping(value = "/getAccountTransactions/{id}")
+    @GetMapping(value = "/limit/list/ok/{id}")
     public ResponseEntity<?> getAccountTransactions(@PathVariable Long id){
         try {
-            return ResponseEntity.ok(userService.getAccountTransactions(id));
+            return ResponseEntity.ok(userService.getAccountTransactions(id, true));
         }
         catch (Exception e){
             return ResponseEntity.internalServerError().body("Something went wrong");

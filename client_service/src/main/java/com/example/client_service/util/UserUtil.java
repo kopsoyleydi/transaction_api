@@ -19,15 +19,11 @@ public class UserUtil {
 
 
     public Mono<List<TransactionDto>> getUsersByAccountFromList(Long accountFrom, boolean type) {
-        String str = type ? "/limit/" : "";
+        String str = type ? "limit/" : "";
         return webClientForTransactions.get()
-                .uri("/api/transaction/getTransactions/" + str + accountFrom)
+                .uri("/api/transaction/list/" + str + accountFrom)
                 .retrieve()
-                .bodyToMono(TransactionDto.class)
-                .flatMap(userDto -> Mono.just(List.of(userDto)));
+                .bodyToFlux(TransactionDto.class) // Заменяем bodyToMono на bodyToFlux
+                .collectList();
     }
-
-
-
-
 }

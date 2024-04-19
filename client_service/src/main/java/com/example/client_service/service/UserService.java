@@ -69,9 +69,9 @@ public class UserService {
         }
     }
 
-    public List<TransactionDto> getAccountTransactions(Long userId) throws Exception {
+    public List<TransactionDto> getAccountTransactions(Long userId, boolean type) throws Exception {
         try {
-            return userUtil.getUsersByAccountFromList(userId, true).block();
+            return userUtil.getUsersByAccountFromList(userId, type).block();
         }
         catch (Exception e){
             logger.error(e.getMessage());
