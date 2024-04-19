@@ -21,15 +21,16 @@ public class MongoMigration {
 
     @EventListener(ApplicationReadyEvent.class)
     public void initData() {
-        if (transactionRepository.count() > 0) {
-            System.out.println("Данные в MongoDB уже существуют. Инициализация пропущена.");
-            return;
-        }
 
         /**
          *  Автозапуск LoadCurrencyInfo при каждом запуске сервиса
          *  **/
         loadCurrencyInfo.loadInfoFromExchangeRate();
+
+        if (transactionRepository.count() > 0) {
+            System.out.println("Данные в MongoDB уже существуют. Инициализация пропущена.");
+            return;
+        }
 
         /**
          *  Генерация тестовых транзакции

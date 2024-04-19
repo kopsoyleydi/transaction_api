@@ -3,7 +3,7 @@ package com.example.transaction_service.service;
 import com.example.transaction_service.data.model.Transaction;
 import com.example.transaction_service.data.repointer.TransactionRepoInter;
 import com.example.transaction_service.dto.TransactionDto;
-import com.example.transaction_service.dto.body.TransactionInsert;
+import com.example.transaction_service.dto.request.TransactionInsert;
 import com.example.transaction_service.dto.body.UserDto;
 import com.example.transaction_service.dto.mapper.TransactionMapper;
 import com.example.transaction_service.util.TransactionLimitUtil;

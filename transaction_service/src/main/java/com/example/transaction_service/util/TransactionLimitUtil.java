@@ -4,7 +4,7 @@ import com.example.transaction_service.data.model.Transaction;
 import com.example.transaction_service.data.repointer.CurrencyRepoInter;
 import com.example.transaction_service.data.repointer.TransactionRepoInter;
 import com.example.transaction_service.dto.body.MinusAmountFromLimit;
-import com.example.transaction_service.dto.body.TransactionInsert;
+import com.example.transaction_service.dto.request.TransactionInsert;
 import com.example.transaction_service.dto.body.UserDto;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -18,8 +18,6 @@ import javax.xml.transform.TransformerException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.concurrent.atomic.AtomicReference;
 
 
 @Component
@@ -94,28 +92,39 @@ public class TransactionLimitUtil {
 
     public Transaction transaction(TransactionInsert transactionInsert) throws JsonProcessingException {
         UserDto userDto = getUserByAccountFrom(transactionInsert.getAccount_from()).block();
+
         List<Transaction> transactionList = transactionRepoInter
                 .getByAllTransactionAccountFrom(transactionInsert.getAccount_from());
+
+        /** Переменные
+         * **/
         assert userDto != null;
-        double limit = userDto.getLimit_sum();
+        double limit = userDto.getLimit_sum() ;
         List<Transaction> inTime = new ArrayList<>();
         double transactionSum = 0.0;
         boolean limit_exceeded = false;
+
         for (Transaction value : transactionList) {
             if (value.getDateTime().isAfter(userDto.getLimit_datetime())
                     && userDto.getLimit_datetime().isBefore(LocalDateTime.now())) {
                 inTime.add(value);
             }
         }
+
         transactionSum = inTime.stream().mapToDouble(Transaction::getCurrent_currency_sum).sum();
+
         Double currency = currencyRepoInter.getByCurrencyCode(userDto.getLimit_currency_shortname()).getCurrencyAmount();
-        if(transactionSum + (transactionInsert.getSum() * (1 / currency )) >= limit * (1 / currency)){
+        double checkCur = userDto.getLimit_currency_shortname().toUpperCase().equals("KZT") ? 1.0 : currency;
+        if(transactionSum + (transactionInsert.getSum() * (1 / checkCur )) > (limit * (1 / currency))){
             limit_exceeded = true;
         }
+
         Transaction transaction = transactionInsertMapper.parse(transactionInsert);
+
         transaction.setSum(transaction.getSum());
         transaction.setRemaining_limit(
                 minusAmountFromLimit(transactionInsert.getAccount_from(), transactionInsert.getSum()).block());
+
         transaction.setLimit_exceeded(limit_exceeded);
         return transaction;
     }

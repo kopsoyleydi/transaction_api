@@ -1,6 +1,5 @@
-package com.example.transaction_service.dto.body;
+package com.example.transaction_service.dto.request;
 
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
