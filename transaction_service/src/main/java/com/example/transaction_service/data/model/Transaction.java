@@ -32,8 +32,6 @@ public class Transaction {
 
     private Double current_currency_sum;
 
-    private Double remaining_limit;
-
     public Transaction(String number, double v) {
     }
 

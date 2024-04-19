@@ -18,6 +18,7 @@ import javax.xml.transform.TransformerException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 
 @Component
@@ -103,7 +104,7 @@ public class TransactionLimitUtil {
         List<Transaction> inTime = new ArrayList<>();
         double transactionSum = 0.0;
         boolean limit_exceeded = false;
-
+        double checkCur = 1.0;
         for (Transaction value : transactionList) {
             if (value.getDateTime().isAfter(userDto.getLimit_datetime())
                     && userDto.getLimit_datetime().isBefore(LocalDateTime.now())) {
@@ -114,16 +115,17 @@ public class TransactionLimitUtil {
         transactionSum = inTime.stream().mapToDouble(Transaction::getCurrent_currency_sum).sum();
 
         Double currency = currencyRepoInter.getByCurrencyCode(userDto.getLimit_currency_shortname()).getCurrencyAmount();
-        double checkCur = userDto.getLimit_currency_shortname().toUpperCase().equals("KZT") ? 1.0 : currency;
+
+        checkCur = Objects.equals(transactionInsert.getCurrency_shortname().toUpperCase(), "KZT") ? 1.0 : currency;
+
         if(transactionSum + (transactionInsert.getSum() * (1 / checkCur )) > (limit * (1 / currency))){
             limit_exceeded = true;
         }
 
         Transaction transaction = transactionInsertMapper.parse(transactionInsert);
-
+        Double balance = minusAmountFromLimit(
+                transaction.getAccount_from(), (transactionInsert.getSum() * (1 / checkCur ))).block();
         transaction.setSum(transaction.getSum());
-        transaction.setRemaining_limit(
-                minusAmountFromLimit(transactionInsert.getAccount_from(), transactionInsert.getSum()).block());
 
         transaction.setLimit_exceeded(limit_exceeded);
         return transaction;

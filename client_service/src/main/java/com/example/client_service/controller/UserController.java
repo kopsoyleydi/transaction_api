@@ -16,16 +16,6 @@ public class UserController {
 
 
 
-    @GetMapping("/limit/remaining/{id}")
-    public ResponseEntity<?> getRemainingLimit(@PathVariable Long id){
-        try {
-            return userService.getRemainingLimit(id);
-        }
-        catch (Exception e){
-            return ResponseEntity.internalServerError().body("Something went wrong");
-        }
-    }
-
     @GetMapping("/limit/account/{id}")
     public ResponseEntity<?> getAccountLimit(@PathVariable Long id){
         try {

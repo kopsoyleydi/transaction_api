@@ -14,9 +14,9 @@ public interface UserRepoInter {
 
     List<User> getAllUsers();
 
-    Double getRemainingLimit(Long userId);
-
     Double getAccountLimit(Long userId);
+
+    Double getBalance(Long userId);
 
     void setNewLimit(Long account, Double limit, String currency);
 }

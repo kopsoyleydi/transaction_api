@@ -13,19 +13,18 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     User findAllById(Long id);
 
-    @Query("select u.remaining_limit from User u where u.id = :userId")
-    Double getRemainingLimit(Long userId);
 
     @Query("select u.limit_sum from User u where u.id = :userId")
     Double getAccountLimit(Long userId);
 
-
+    @Query("select u.balance from User u where u.id = :userId")
+    Double getBalanceByUserId(Long userId);
 
     @Modifying(clearAutomatically = true)
     @Query("update User u set u.limit_sum = :limit," +
             "u.limit_datetime = now(), " +
-            " u.limit_currency_shortname = :limit_currency," +
-            " u.remaining_limit =: limit where u.id = :account")
+            " u.limit_currency_shortname = :limit_currency" +
+            "  where u.id = :account")
     void setLimit(Long account, Double limit, String limit_currency);
 
 }

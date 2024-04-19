@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 
 import static com.example.transaction_service.util.TransactionUtil.currencySum;
 
@@ -29,7 +30,7 @@ public class TransactionInsertMapper {
                 currencyRepoInter.getByCurrencyCode(
                         transactionInsert.getCurrency_shortname()));
         transaction.setCurrent_currency_sum(currencySum(transactionInsert.getSum(), currencyDto.getCurrencyAmount()));
-        transaction.setDateTime(LocalDateTime.now());
+        transaction.setDateTime(LocalDateTime.now(ZoneId.of("Asia/Tashkent")));
         transaction.setCurrency_shortname(transactionInsert.getCurrency_shortname());
         transaction.setExpense_category(transactionInsert.getExpense_category());
         return transaction;

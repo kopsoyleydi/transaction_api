@@ -3,9 +3,7 @@ package com.example.transaction_service.controller;
 import com.example.transaction_service.service.CurrencyService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
@@ -17,5 +15,10 @@ public class CurrencyController {
     @PostMapping(value = "/loadInfo")
     public ResponseEntity<?> loadInfo() {
         return currencyService.loadCurrencies();
+    }
+
+    @GetMapping("/amount/{code}")
+    public ResponseEntity<?> amount(@PathVariable String code){
+        return currencyService.getCurrencyAmount(code);
     }
 }

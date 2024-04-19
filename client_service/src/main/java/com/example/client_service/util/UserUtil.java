@@ -21,9 +21,16 @@ public class UserUtil {
     public Mono<List<TransactionDto>> getUsersByAccountFromList(Long accountFrom, boolean type) {
         String str = type ? "limit/" : "";
         return webClientForTransactions.get()
-                .uri("/api/transaction/list/" + str + accountFrom)
+                .uri("/transaction/list/" + str + accountFrom)
                 .retrieve()
                 .bodyToFlux(TransactionDto.class) // Заменяем bodyToMono на bodyToFlux
                 .collectList();
+    }
+
+    public Mono<Double> getAmountByCurrencyCode(String code) {
+        return webClientForTransactions.get()
+                .uri("/currency/amount/" + code)
+                .retrieve()
+                .bodyToMono(Double.class); // Заменяем bodyToMono на bodyToFlux
     }
 }

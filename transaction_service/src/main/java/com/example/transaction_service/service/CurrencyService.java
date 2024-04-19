@@ -25,7 +25,7 @@ public class CurrencyService {
     public ResponseEntity<?> getCurrencyAmount(String code){
         try {
             return ResponseEntity.ok(currencyMapper.toDto(
-                    currencyRepoInter.getByCurrencyCode(code)));
+                    currencyRepoInter.getByCurrencyCode(code)).getCurrencyAmount());
         }
         catch (Exception e){
             logger.error("Error in Currency Service, method: getCurrencyAmount");

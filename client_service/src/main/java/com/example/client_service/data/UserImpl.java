@@ -33,14 +33,15 @@ public class UserImpl implements UserRepoInter {
         return userRepository.findAll();
     }
 
-    @Override
-    public Double getRemainingLimit(Long userId) {
-        return userRepository.getRemainingLimit(userId);
-    }
 
     @Override
     public Double getAccountLimit(Long userId) {
         return userRepository.getAccountLimit(userId);
+    }
+
+    @Override
+    public Double getBalance(Long userId) {
+        return userRepository.getBalanceByUserId(userId);
     }
 
     @Override

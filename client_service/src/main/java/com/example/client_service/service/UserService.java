@@ -28,15 +28,6 @@ public class UserService {
 
     private static final Logger logger = LoggerFactory.getLogger(UserService.class);
 
-    public ResponseEntity<?> getRemainingLimit(Long accountFrom){
-        try {
-            return ResponseEntity.ok(userRepoInter.getRemainingLimit(accountFrom));
-        }
-        catch (DataAccessException e){
-            logger.error(e.getLocalizedMessage());
-            return ResponseEntity.internalServerError().body("Ошибка при взаимодействием с базой ");
-        }
-    }
 
     public UserResponse getAccount(Long account){
         try {

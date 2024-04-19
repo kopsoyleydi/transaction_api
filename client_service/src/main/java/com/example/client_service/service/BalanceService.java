@@ -19,8 +19,7 @@ public class BalanceService {
     public Double minusBalance(Long account, Double sum){
         User user = userRepoInter.getUserById(account);
         user.setBalance(user.getBalance() - sum);
-        user.setRemaining_limit(user.getRemaining_limit() - sum);
         userRepoInter.change(user);
-        return userRepoInter.getRemainingLimit(account);
+        return userRepoInter.getBalance(account);
     }
 }
