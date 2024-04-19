@@ -1,0 +1,63 @@
+version: '3.1'
+
+services:
+  mysqldb:
+    image: mysql
+    container_name: 'mysql-container'
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_DATABASE=mysql
+    ports:
+      - 2345:3306
+
+  mongodb:
+    image: mongo
+    container_name: mongodb
+    ports:
+      - 27017:27017
+    volumes:
+      - data:/data
+  mongo-express:
+      image: mongo-express
+      container_name: mongo-express
+      restart: always
+      ports:
+        - 8081:8081
+      environment:
+        - ME_CONFIG_MONGODB_ADMINUSERNAME=root
+        - ME_CONFIG_MONGODB_ADMINPASSWORD=
+        - ME_CONFIG_MONGODB_SERVER=mongodb
+
+  api-gateway:
+    image: 'kopsoyleydi/transaction_api_gateway'
+    container_name: 'transaction_api_gateway'
+    ports:
+      - 9000:9000
+  eureka_server:
+    image: 'kopsoyleydi/transaction_eureka_server'
+    container_name: 'transaction_eureka_server'
+    ports:
+      - 8761:8761
+  transaction_service:
+    image: 'kopsoyleydi/transaction_service'
+    container_name: 'transaction_service'
+    ports:
+      - 9002:9002
+  client_service:
+    image: 'kopsoyleydi/transaction_client_server'
+    container_name: 'transaction_client_server'
+    depends_on:
+      - mysqldb
+    environment:
+        - SERVER_PORT=9001
+        - SPRING_DATASOURCE_USERNAME=root
+        - SPRING_DATASOURCE_PASSWORD=root
+        - SPRING_DATASOURCE_URL=jdbc:mysql://mysqldb:3306/mysql
+        - SPRING_JPA_HIBERNATE_DDL_AUTO=none
+        - SPRING_JPA_SHOW_SQL=true
+        - LIQUIBASE_CHANGELOG=classpath:/db/changelog/db.changelog-master.xml # Liquibase changelog file
+    volumes:
+        - ./db/changelog:/liquibase/changelog # Mount Liquibase changelog file
+        - ./db/data:/liquibase/data # Mount Liquibase data files
+    ports:
+        - 9001:9001
