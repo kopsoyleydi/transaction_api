@@ -1,5 +1,6 @@
 package com.example.client_service.controller;
 
+import com.example.client_service.dto.UserDto;
 import com.example.client_service.dto.request.SetLimit;
 import com.example.client_service.dto.response.UserResponse;
 import com.example.client_service.service.UserService;
@@ -14,6 +15,15 @@ public class UserController {
 
     private final UserService userService;
 
+    @PostMapping("/insert")
+    public ResponseEntity<?> insert(@RequestBody UserDto userDto){
+        try {
+            return ResponseEntity.ok(userService.insert(userDto));
+        }
+        catch (Exception e){
+            return ResponseEntity.internalServerError().body("Something went wrong");
+        }
+    }
 
 
     @GetMapping("/limit/account/{id}")

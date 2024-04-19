@@ -13,7 +13,6 @@ CREATE TABLE user (
                       id BIGINT AUTO_INCREMENT PRIMARY KEY,
                       name VARCHAR(255) NOT NULL,
                       limit_sum DOUBLE,
-                      remaining_limit DOUBLE,
                       limit_datetime TIMESTAMP,
                       limit_currency_shortname VARCHAR(255),
                       surname VARCHAR(255),

@@ -43,6 +43,10 @@ public class UserService {
         }
     }
 
+    public UserDto insert(UserDto userDto){
+        return userMapper.toDto(userRepoInter.insert(userMapper.toModel(userDto)));
+    }
+
 
     public Double getAccountLimit(Long accountFrom){
         return userRepoInter.getAccountLimit(accountFrom);
