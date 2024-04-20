@@ -17,29 +17,41 @@
 
 ### EndPoints
 
-#### Contact service, this service connect to Postgres
+#### Client Service, this service connect to MySql
+
+Main service endpoint - "api/user"
 
 | Method | Path         | Description                                                           |
-|--------|--------------|-----------------------------------------------------------------------|
-| GET    | /contact/id  | Get a contact by id                                                   |
-| POST   | /contact/    | Create a new contact, send request without id                         |
-| PUT    | /contact/    | Update contact with all parameters                                    |
-| DELETE | /contact/id  | Delete a contact                                                      |
-| GET    | /contact/all | Запрос для списка контактов с помощью фильтра Filter - описание снизу |
+|--------|----------------------|-----------------------------------------------------------------------|
+| POST   | /insert              | Для добавления пользователя                                           |
+| GET    | /{id}                | Для получения пользователя                                            |
+| PUT    | /setLimit/{id}       | Для устонавления лимита транзакций                                    |
+| GET    | /limit/list/bad/{id} | Запрос для списка транзакций которые превысили лимит                  |
+| GET    | /contact/all         | Запрос для списка транзакций которые в предалах лимита                |
 
-CONTACT-DTO - для отправки запроса на сервер, для создания нового контакта:
+USER-DTO - для отправки запроса на сервер, для создания нового контакта:
 
 `
 
-    int:id -- при созданий нового пользователя отправлять без id 
+    Long:id -- при созданий нового пользователя отправлять без id 
     String:name
-    int:yearOfBirth
-    String: firstPhoneNumber
-    String: secondPhoneNumber
+    Double:limit_sum
+    LocalDateTime: limit_datetime
+    String: surname
+    String clientIin
+    String birthDate
+    String address
+    Double balance
+    @ManyToOne
+    CityDto city
+    @ManyToMany
+    List<PermissionDto> permissions;
     -- Дату и время создания сервис сам вазьмет и отправит в BD
 `
+Использовал классы обертки(wrapper classes), так как внутри классов оберток есть свои методы которые может помогут во время разработки, и Garbage Callector - очищает их.
 
-#### Person service, this service connect to MongoDB
+
+#### Transaction service, this service connect to MongoDB
 | Method | Path         | Description                                                               |
 |--------|--------------|---------------------------------------------------------------------------|
 | GET    | /person/id   | Get a person by id                                                        |
