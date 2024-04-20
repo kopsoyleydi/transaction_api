@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
 
 @Getter
@@ -19,7 +20,7 @@ public class UserResponse {
     private Double limit_sum;
 
 
-    private ZonedDateTime limit_datetime;
+    private LocalDateTime limit_datetime;
 
     private String limit_currency_shortname;
 

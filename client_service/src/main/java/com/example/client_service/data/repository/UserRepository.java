@@ -7,6 +7,8 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDateTime;
+
 @Repository
 @Transactional
 public interface UserRepository extends JpaRepository<User, Long> {
@@ -22,9 +24,9 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     @Modifying(clearAutomatically = true)
     @Query("update User u set u.limit_sum = :limit," +
-            "u.limit_datetime = now(), " +
+            " u.limit_datetime =  :localDateTime, " +
             " u.limit_currency_shortname = :limit_currency" +
             "  where u.id = :account")
-    void setLimit(Long account, Double limit, String limit_currency);
+    void setLimit(Long account, Double limit, String limit_currency, LocalDateTime localDateTime);
 
 }

@@ -4,6 +4,7 @@ import com.example.client_service.model.enums.Usertype;
 import jakarta.persistence.*;
 import lombok.Data;
 
+import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
 import java.util.List;
 
@@ -24,7 +25,7 @@ public class User {
 
 
     @Column(name = "limit_datetime")
-    private ZonedDateTime limit_datetime;
+    private LocalDateTime limit_datetime;
 
     @Column(name = "limit_currency_shortname")
     private String limit_currency_shortname;

@@ -6,6 +6,8 @@ import com.example.client_service.model.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.List;
 
 @Component
@@ -46,6 +48,6 @@ public class UserImpl implements UserRepoInter {
 
     @Override
     public void setNewLimit(Long account, Double limit, String currency) {
-        userRepository.setLimit(account, limit, currency);
+        userRepository.setLimit(account, limit, currency, LocalDateTime.now(ZoneId.of(("Asia/Tashkent"))));
     }
 }

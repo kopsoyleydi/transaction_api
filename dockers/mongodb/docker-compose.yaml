@@ -20,10 +20,22 @@ services:
       - ME_CONFIG_MONGODB_ADMINUSERNAME=rootuser
       - ME_CONFIG_MONGODB_ADMINPASSWORD=rootpass
       - ME_CONFIG_MONGODB_SERVER=mongodb
+  mysqldb:
+    image: mysql
+    container_name: 'mysql-container'
+    environment:
+      - MYSQL_DATABASE=app
+      - MYSQL_ROOT_PASSWORD=root
+    ports:
+      - "2345:3306"
+    networks:
+      - my-network
 
 volumes:
   data: {}
 
 networks:
+  my-network:
+      driver: bridge
   default:
     name: mongodb_network
