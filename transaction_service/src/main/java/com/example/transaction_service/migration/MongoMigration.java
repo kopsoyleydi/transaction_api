@@ -9,6 +9,7 @@ import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 
 @Component
 public class MongoMigration {
@@ -44,23 +45,23 @@ public class MongoMigration {
     private void generateTransactions() {
         Transaction transaction1 = new Transaction(
                 "1", 1000.0, 123456789L, 1L, "USD",
-                LocalDateTime.now(), "Food", false,
+                LocalDateTime.now(ZoneId.of("Asia/Tashkent")), "Food", false,
                 450000.0);
         Transaction transaction2 = new Transaction(
                 "2", 1000.0, 987654321L, 1L, "USD",
-                LocalDateTime.now(), "Shopping", false,
+                LocalDateTime.now(ZoneId.of("Asia/Tashkent")), "Shopping", false,
                 450000.0);
         Transaction transaction3 = new Transaction(
                 "3", 1000.0, 123456789L, 1L, "USD",
-                LocalDateTime.now(), "Transport", false,
+                LocalDateTime.now(ZoneId.of("Asia/Tashkent")), "Transport", false,
                 450000.0);
         Transaction transaction4 = new Transaction(
                 "4", 1000.0, 888888888L, 2L, "USD",
-                LocalDateTime.now(), "Entertainment", false,
+                LocalDateTime.now(ZoneId.of("Asia/Tashkent")), "Entertainment", false,
                 450000.0);
         Transaction transaction5 = new Transaction(
                 "5", 1000.0, 123456789L, 2L, "USD",
-                LocalDateTime.now(), "Utilities", false,
+                LocalDateTime.now(ZoneId.of("Asia/Tashkent")), "Utilities", false,
                 450000.0);
 
         transactionRepository.save(transaction1);

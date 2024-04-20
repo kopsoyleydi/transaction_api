@@ -18,7 +18,6 @@ public class UserResponse {
 
     private Double limit_sum;
 
-    private Double remaining_limit;
 
     private ZonedDateTime limit_datetime;
 

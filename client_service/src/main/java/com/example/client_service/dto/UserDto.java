@@ -21,7 +21,6 @@ public class UserDto {
 
     private Double limit_sum;
 
-    private Double remaining_limit;
 
     private ZonedDateTime limit_datetime;
 

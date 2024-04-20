@@ -8,7 +8,7 @@ import java.time.ZonedDateTime;
 import java.util.List;
 
 @Entity
-@Table(name = "user")
+@Table(name = "t_user")
 @Data
 public class User {
 
@@ -32,10 +32,10 @@ public class User {
     @Column(name = "surname")
     private String surname;
 
-    @Column(name = "clientIin")
+    @Column(name = "client_iin")
     private String clientIin;
 
-    @Column(name = "birthDate")
+    @Column(name = "birth_date")
     private String birthDate;
 
     @Column(name = "address")

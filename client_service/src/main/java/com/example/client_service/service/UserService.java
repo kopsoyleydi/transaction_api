@@ -33,7 +33,7 @@ public class UserService {
         try {
             UserDto userDto = userMapper.toDto(userRepoInter.getUserById(account));
             return new UserResponse(userDto.getId()
-                    , userDto.getName(), userDto.getLimit_sum(), userDto.getLimit_sum(), userDto.getLimit_datetime(),
+                    , userDto.getName(), userDto.getLimit_sum(), userDto.getLimit_datetime(),
                     userDto.getLimit_currency_shortname(), userDto.getSurname()
                     , userDto.getClientIin(), userDto.getBirthDate(), userDto.getAddress(), userDto.getBalance());
         }
