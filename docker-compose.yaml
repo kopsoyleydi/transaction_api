@@ -1,83 +1,32 @@
 version: '3.1'
 
 services:
-  mysqldb:
-    image: mysql
-    container_name: 'mysql-container'
-    environment:
-      - MYSQL_ROOT_PASSWORD=root
-      - MYSQL_DATABASE=mysql
+  eureka_server:
+    image: 'kopsoyleydi/transaction_eureka_server'
+    container_name: 'transaction_eureka_server'
     ports:
-      - 2345:3306
-    volumes:
-      - ./init-scripts:/docker-entrypoint-initdb.d
+      - 8761:8761
     healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-uroot", "-p${MYSQL_ROOT_PASSWORD}"]
-      timeout: 20s
-      retries: 10
-
-  mongodb:
-    image: mongo
-    container_name: mongodb
-    ports:
-      - 27017:27017
-    depends_on:
-      - mysqldb
-    healthcheck:
-      test: ["CMD", "mongo", "--eval", "db.adminCommand('ping')"]
-      timeout: 20s
-      retries: 10
-
-  mongo-express:
-    image: mongo-express
-    container_name: mongo-express
-    restart: always
-    ports:
-      - 8081:8081
-    environment:
-      - ME_CONFIG_MONGODB_ADMINUSERNAME=root
-      - ME_CONFIG_MONGODB_ADMINPASSWORD=
-      - ME_CONFIG_MONGODB_SERVER=mongodb
-    depends_on:
-      - mongodb
-    healthcheck:
-      test: ["CMD", "mongo", "--eval", "db.adminCommand('ping')"]
-      timeout: 20s
-      retries: 10
-
+      test: [ "CMD", "curl", "-f", "http://localhost:8761/actuator/health" ]
+      interval: 30s
+      timeout: 10s
+      retries: 5
   api-gateway:
-    image: 'kopsoyleydi/transaction_api_gateway'
+    image: 'kopsoyleydi/transaction-api-gateway'
     container_name: 'transaction_api_gateway'
     ports:
       - 9000:9000
-    depends_on:
-      - mongo-express
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:9000/health"]
       interval: 30s
       timeout: 10s
       retries: 5
 
-  eureka_server:
-    image: 'kopsoyleydi/transaction_eureka_server'
-    container_name: 'transaction_eureka_server'
-    ports:
-      - 8761:8761
-    depends_on:
-      - api-gateway
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8761/actuator/health"]
-      interval: 30s
-      timeout: 10s
-      retries: 5
-
   transaction_service:
-    image: 'kopsoyleydi/transaction_service'
+    image: 'kopsoyleydi/transaction_back_service'
     container_name: 'transaction_service'
     ports:
       - 9002:9002
-    depends_on:
-      - eureka_server
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:9002/actuator/health"]
       interval: 30s
@@ -85,15 +34,13 @@ services:
       retries: 5
 
   client_service:
-    image: 'kopsoyleydi/transaction_client_server'
+    image: 'kopsoyleydi/transaction_client_service'
     container_name: 'transaction_client_server'
-    depends_on:
-      - mysqldb
     environment:
       - SERVER_PORT=9001
       - SPRING_DATASOURCE_USERNAME=root
       - SPRING_DATASOURCE_PASSWORD=root
-      - SPRING_DATASOURCE_URL=jdbc:mysql://mysqldb:3306/mysql
+      - SPRING_DATASOURCE_URL=jdbc:mysql://localhost:2345/app
       - SPRING_JPA_HIBERNATE_DDL_AUTO=none
       - SPRING_JPA_SHOW_SQL=true
       - LIQUIBASE_CHANGELOG=classpath:/db/changelog/db.changelog-master.xml # Liquibase changelog file
@@ -103,7 +50,7 @@ services:
     ports:
       - 9001:9001
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:9001/actuator/health"]
+      test: [ "CMD", "curl", "-f", "http://localhost:9001/actuator/health" ]
       interval: 30s
       timeout: 10s
       retries: 5
